@@ -1,48 +1,34 @@
 import streamlit as st
-from parser import parse_sentence, get_base_form
-from dictionary_lookup import fetch_word_data
+from chunker import chunk_sentence
+from openai_helper import analyze_chunks
 
-# Set page title
+# Set up page and styles
 st.set_page_config(page_title="Language Parser", layout="wide")
-
-st.markdown("""
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Noto Sans JP', sans-serif;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-
-# Load custom CSS
 with open("static/style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Input sentence
-sentence = st.text_input("Enter a Japanese sentence:")
+# Input box for the sentence
+sentence = st.text_input("Enter a sentence:")
 
 if sentence:
-    # Parse the sentence
-    tokens = parse_sentence(sentence)
+    # Chunk the sentence
+    chunks = chunk_sentence(sentence)
     
-    # Display parsed sentence with hover functionality
+    # Analyze each chunk using ChatGPT
+    analyzed_chunks = analyze_chunks(chunks)
+
+    # Display the sentence with color-coded chunks and tooltips
     st.markdown('<div class="sentence">', unsafe_allow_html=True)
-    for token in tokens:
-        base_form = get_base_form(token["text"], token["pos"])
-        word_data = fetch_word_data(base_form)
+    for chunk in analyzed_chunks:
         tooltip = f"""
             <div class='tooltip'>
-                <strong>{word_data['word']}</strong><br>
-                Pronunciation: {word_data.get('pronunciation', 'N/A')}<br>
-                Part of Speech: {word_data.get('part_of_speech', 'N/A')}<br>
-                Definition: {word_data.get('definition', 'N/A')}<br>
-                Etymology: {word_data.get('etymology', 'N/A')}<br>
-                Example: {word_data.get('example', 'N/A')}<br>
+                <strong>{chunk['text']}</strong><br>
+                <em>Role:</em> {chunk['role']}<br>
+                <em>Explanation:</em> {chunk['explanation']}
             </div>
         """
         st.markdown(
-            f"<span class='word' style='color:{token['color']}' title='{tooltip}'>{token['text']}</span>",
-            unsafe_allow_html=True,
+            f"<span class='chunk' style='color:{chunk['color']}' title='{tooltip}'>{chunk['text']}</span>",
+            unsafe_allow_html=True
         )
     st.markdown('</div>', unsafe_allow_html=True)
