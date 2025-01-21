@@ -1,0 +1,4 @@
+streamlit
+spacy
+mecab-python3
+requests
