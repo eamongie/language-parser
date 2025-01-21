@@ -1,5 +1,6 @@
+streamlit
 spacy
-spacy[ja]
+spacy[ja]  # Includes SudachiPy for Japanese NLP
 mecab-python3
 requests
-streamlit
+beautifulsoup4  # For HTML parsing of Wiktionary data
