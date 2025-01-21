@@ -9,6 +9,11 @@ COLORS = {
     "VERB": "green",
     "ADJ": "red",
     "PART": "purple",
+    "CONJ": "orange",
+    "ADV": "teal",
+    "PRON": "pink",
+    "AUX": "brown",
+    "INTJ": "lime",
 }
 
 def parse_sentence(sentence):
@@ -18,6 +23,13 @@ def parse_sentence(sentence):
         tokens.append({
             "text": token.text,
             "pos": token.pos_,
-            "color": COLORS.get(token.pos_, "black")
+            "color": COLORS.get(token.pos_, "black"),
         })
     return tokens
+
+def get_base_form(word, pos):
+    # Simplified logic for extracting base form (can integrate MeCab or SudachiPy)
+    if pos == "VERB":
+        # Placeholder logic for conjugation removal
+        return word.rstrip("ます")  # Example: "行きます" -> "行く"
+    return word
