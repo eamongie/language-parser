@@ -1,4 +1,5 @@
-streamlit
 spacy
+spacy[ja]
 mecab-python3
 requests
+streamlit
