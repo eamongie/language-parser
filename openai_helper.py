@@ -1,7 +1,8 @@
 import openai
+import os
 
 # Set your OpenAI API key
-openai.api_key = "your-openai-api-key"
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def analyze_chunks(chunks):
     analyzed_chunks = []
