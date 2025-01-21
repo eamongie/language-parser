@@ -5,6 +5,16 @@ from dictionary_lookup import fetch_word_data
 # Set page title
 st.set_page_config(page_title="Language Parser", layout="wide")
 
+st.markdown("""
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
 # Load custom CSS
 with open("static/style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
