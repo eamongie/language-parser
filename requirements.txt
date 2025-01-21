@@ -1,6 +1,4 @@
 streamlit
 spacy
 spacy[ja]  # Includes SudachiPy for Japanese NLP
-mecab-python3
-requests
-beautifulsoup4  # For HTML parsing of Wiktionary data
+openai
