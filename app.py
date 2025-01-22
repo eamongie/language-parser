@@ -16,10 +16,16 @@ if sentence:
 
     # Display sentence breakdown
     st.markdown("### Sentence Breakdown")
+    sentence_romaji = []
     for chunk in chunks:
         # Fetch the definition for the lemma
         definition = fetch_definition(chunk["lemma"])
+        sentence_romaji.append(chunk["romaji"])  # Collect romaji for the sentence
         st.markdown(
             f"<span style='color:{chunk['color']}; font-size: 18px;'>{chunk['text']}</span>: {definition}",
             unsafe_allow_html=True
         )
+
+    # Display sentence-wide romaji
+    st.markdown("### Sentence in Romaji")
+    st.write(" ".join(sentence_romaji))
