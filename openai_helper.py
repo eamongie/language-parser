@@ -20,7 +20,7 @@ def analyze_chunks(chunks):
                 {"role": "system", "content": "You are a helpful assistant specializing in Japanese grammar and language."},
                 {"role": "user", "content": prompt}
             ],
-            model="gpt-4",  # Replace with "gpt-3.5-turbo" if needed
+            model="gpt-3.5-turbo",  # Replace with "gpt-3.5-turbo" if needed
         )
 
         # Extract the explanation from the response
