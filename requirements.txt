@@ -1,8 +1,7 @@
 streamlit
-sudachipy==0.6.10
+sudachipy
 sudachidict_core
-fugashi==1.4.0
+fugashi
 pykakasi
 beautifulsoup4
 requests
-unidic-lite
