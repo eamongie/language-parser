@@ -2,13 +2,13 @@ import streamlit as st
 from chunker import chunk_sentence
 from openai_helper import analyze_chunks
 
-# Set up page and styles
-st.set_page_config(page_title="Language Parser", layout="wide")
+# Set up the page and load custom CSS
+st.set_page_config(page_title="Japanese NLP Parser", layout="wide")
 with open("static/style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Input box for the sentence
-sentence = st.text_input("Enter a sentence:")
+sentence = st.text_input("Enter a Japanese sentence:")
 
 if sentence:
     # Chunk the sentence
@@ -17,7 +17,7 @@ if sentence:
     # Analyze each chunk using ChatGPT
     analyzed_chunks = analyze_chunks(chunks)
 
-    # Display the sentence with color-coded chunks and tooltips
+    # Display the sentence with color-coded chunks
     st.markdown('<div class="sentence">', unsafe_allow_html=True)
     for chunk in analyzed_chunks:
         tooltip = f"""
