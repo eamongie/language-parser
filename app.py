@@ -11,10 +11,10 @@ with open("static/style.css") as f:
 sentence = st.text_input("Enter a Japanese sentence:")
 
 if sentence:
-    # Chunk the sentence
+    # Chunk the sentence into logical parts
     chunks = chunk_sentence(sentence)
-    
-    # Analyze each chunk using ChatGPT
+
+    # Analyze each chunk using the OpenAI API
     analyzed_chunks = analyze_chunks(chunks)
 
     # Display the sentence with color-coded chunks
