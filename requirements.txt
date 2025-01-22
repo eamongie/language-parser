@@ -1,6 +1,7 @@
 streamlit
 sudachipy
 sudachidict_core
+fugashi
 pykakasi
 beautifulsoup4
 requests
