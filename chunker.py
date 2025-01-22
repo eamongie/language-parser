@@ -1,29 +1,22 @@
-import spacy
-
-# Load English model (modify for Japanese)
-nlp = spacy.load("en_core_web_sm")
+from sudachipy import tokenizer
+from sudachipy import dictionary
 
 # Color mapping for grammatical roles
 COLORS = {
-    "Subject": "blue",
-    "Verb": "green",
-    "Object": "orange",
-    "Adverb": "purple",
-    "Other": "gray"
+    "名詞": "blue",  # Noun
+    "動詞": "green",  # Verb
+    "形容詞": "red",  # Adjective
+    "助詞": "purple",  # Particle
+    "その他": "gray",  # Default
 }
 
 def chunk_sentence(sentence):
-    doc = nlp(sentence)
+    tokenizer_obj = dictionary.Dictionary().create()
+    tokens = tokenizer_obj.tokenize(sentence, tokenizer.Tokenizer.SplitMode.C)
     chunks = []
-    for token in doc:
-        if token.dep_ == "nsubj":
-            chunks.append({"text": token.text, "role": "Subject", "color": COLORS["Subject"]})
-        elif token.pos_ == "VERB":
-            chunks.append({"text": token.text, "role": "Verb", "color": COLORS["Verb"]})
-        elif token.dep_ == "dobj" or token.dep_ == "pobj":
-            chunks.append({"text": token.text, "role": "Object", "color": COLORS["Object"]})
-        elif token.pos_ == "ADV":
-            chunks.append({"text": token.text, "role": "Adverb", "color": COLORS["Adverb"]})
-        else:
-            chunks.append({"text": token.text, "role": "Other", "color": COLORS["Other"]})
+    for token in tokens:
+        pos = token.part_of_speech()[0]  # Part of speech
+        word = token.surface()  # Word surface form
+        color = COLORS.get(pos, "gray")
+        chunks.append({"text": word, "role": pos, "color": color})
     return chunks
