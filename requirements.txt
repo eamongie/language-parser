@@ -1,5 +1,6 @@
 streamlit
 sudachipy
 sudachidict_core
-requests
+pykakasi
 beautifulsoup4
+requests
