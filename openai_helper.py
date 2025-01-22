@@ -12,9 +12,14 @@ def analyze_chunks(chunks):
     analyzed_chunks = []
     for chunk in chunks:
         prompt = f"Explain the role and meaning of '{chunk['text']}' in the sentence. Include grammatical role, meaning, and context."
+        
+        # Use the correct method for chat completion
         response = openai.ChatCompletion.create(
             model="gpt-4",
-            messages=[{"role": "user", "content": prompt}]
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant specializing in Japanese language parsing."},
+                {"role": "user", "content": prompt}
+            ]
         )
         explanation = response['choices'][0]['message']['content'].strip()
         analyzed_chunks.append({
