@@ -1,4 +1,7 @@
 streamlit
+sudachipy
+sudachidict_core
+python-dotenv
+openai
 spacy
 spacy[ja]  # Includes SudachiPy for Japanese NLP
-openai
