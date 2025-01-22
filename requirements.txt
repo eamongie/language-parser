@@ -1,7 +1,8 @@
 streamlit
-sudachipy
-sudachidict_core
 fugashi
+unidic-lite
 pykakasi
 beautifulsoup4
 requests
+sudachipy
+sudachidict_core
