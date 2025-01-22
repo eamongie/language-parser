@@ -1,16 +1,14 @@
 from sudachipy import tokenizer
 from sudachipy import dictionary
 
-# Color mapping for grammatical roles
+# Define colors for part-of-speech tags
 COLORS = {
     "名詞": "blue",  # Noun
     "動詞": "green",  # Verb
     "形容詞": "red",  # Adjective
     "助詞": "purple",  # Particle
-    "助動詞": "orange",  # Auxiliary verb
     "副詞": "teal",  # Adverb
-    "感動詞": "pink",  # Interjection
-    "その他": "gray",  # Default for unknown or other types
+    "その他": "gray",  # Default
 }
 
 def chunk_sentence(sentence):
@@ -20,6 +18,6 @@ def chunk_sentence(sentence):
     for token in tokens:
         pos = token.part_of_speech()[0]  # Part of speech
         word = token.surface()  # Word surface form
-        color = COLORS.get(pos, "gray")
+        color = COLORS.get(pos, "gray")  # Assign color
         chunks.append({"text": word, "role": pos, "color": color})
     return chunks
