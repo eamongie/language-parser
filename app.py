@@ -1,35 +1,26 @@
 import streamlit as st
 from chunker import chunk_sentence
-from openai_helper import analyze_chunks
-import os
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
+from definition_fetcher import fetch_definition
 
 # App configuration
-st.set_page_config(page_title="Japanese NLP Parser", layout="wide")
+st.set_page_config(page_title="Japanese Sentence Parser", layout="wide")
 
 # Page title
-st.title("Japanese NLP Parser")
+st.title("Japanese Sentence Parser")
 
 # Input box for the sentence
 sentence = st.text_input("Enter a Japanese sentence:")
 
 if sentence:
-    # Display loading spinner while processing
-    with st.spinner("Processing the sentence..."):
-        # Chunk the sentence into logical parts
+    # Parse the sentence
+    with st.spinner("Parsing the sentence..."):
         chunks = chunk_sentence(sentence)
 
-        # Analyze chunks using OpenAI API
-        analyzed_chunks = analyze_chunks(chunks)
-
-    # Display the sentence with chunk explanations
+    # Fetch definitions for each token
     st.markdown("### Sentence Breakdown")
-    for chunk in analyzed_chunks:
+    for chunk in chunks:
+        definition = fetch_definition(chunk["text"])
         st.markdown(
-            f"<span style='color:{chunk['color']}; font-size: 18px;'>"
-            f"{chunk['text']}</span>: {chunk['explanation']}",
+            f"<span style='color:{chunk['color']}; font-size: 18px;'>{chunk['text']}</span>: {definition}",
             unsafe_allow_html=True
         )
