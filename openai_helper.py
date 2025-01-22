@@ -11,14 +11,14 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 def analyze_chunks(chunks):
     analyzed_chunks = []
     for chunk in chunks:
-        # Create a prompt to explain the chunk
-        prompt = f"Explain the role and meaning of '{chunk['text']}' in the sentence. Include grammatical role, meaning, and context."
+        # Create a prompt specific to Japanese NLP
+        prompt = f"Explain the grammatical role and meaning of '{chunk['text']}' in a Japanese sentence. Include details like its part of speech, grammatical usage, and meaning."
 
         # Use the latest ChatCompletion method
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Use "gpt-4" if you need GPT-4
+            model="gpt-3.5-turbo",  # Use "gpt-4" if available
             messages=[
-                {"role": "system", "content": "You are a helpful assistant specializing in Japanese grammar parsing."},
+                {"role": "system", "content": "You are a helpful assistant specializing in Japanese grammar and language."},
                 {"role": "user", "content": prompt}
             ]
         )
