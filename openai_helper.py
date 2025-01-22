@@ -1,13 +1,17 @@
-import openai
 import os
+from dotenv import load_dotenv
+import openai
 
-# Set your OpenAI API key
+# Load environment variables
+load_dotenv()
+
+# Get the OpenAI API key from the environment
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def analyze_chunks(chunks):
     analyzed_chunks = []
     for chunk in chunks:
-        prompt = f"Explain the role and meaning of '{chunk['text']}' in a sentence. Provide details on its grammatical role, meaning, and any relevant context."
+        prompt = f"Explain the role and meaning of '{chunk['text']}' in the sentence. Include grammatical role, meaning, and context."
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}]
