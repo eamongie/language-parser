@@ -1,5 +1,9 @@
 import streamlit as st
+import sounddevice as sd
+import numpy as np
+import scipy.io.wavfile as wav
 import speech_recognition as sr
+import os
 
 # Set custom style
 st.markdown(
@@ -9,31 +13,39 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-def transcribe_from_microphone():
+# Record audio function
+def record_audio(duration=5, sample_rate=44100, filename="output.wav"):
+    st.info(f"Recording for {duration} seconds...")
+    audio_data = sd.rec(int(duration * sample_rate), samplerate=sample_rate, channels=1, dtype='int16')
+    sd.wait()  # Wait until recording is finished
+    wav.write(filename, sample_rate, audio_data)
+    st.success("Recording finished! Saved as output.wav.")
+    return filename
+
+# Transcribe audio function
+def transcribe_audio(filename):
     recognizer = sr.Recognizer()
-    microphone = sr.Microphone()
-
+    with sr.AudioFile(filename) as source:
+        st.info("Transcribing audio...")
+        audio = recognizer.record(source)
     try:
-        with microphone as source:
-            st.info("Adjusting for ambient noise... Speak when ready.")
-            recognizer.adjust_for_ambient_noise(source, duration=1)
-
-            st.info("Listening...")
-            audio = recognizer.listen(source)
-
-        st.info("Processing transcription...")
         transcription = recognizer.recognize_google(audio)
         return transcription
-
     except sr.UnknownValueError:
-        return "Sorry, I could not understand that."
+        return "Could not understand the audio."
     except sr.RequestError as e:
         return f"Error with the Speech Recognition service: {e}"
 
 # Streamlit UI
-st.title("🎤 Real-Time Speech Transcription")
-st.write("Click the button below to start transcribing from your microphone.")
+st.title("🎤 Real-Time Speech Transcription (Local Recording)")
+st.write("Record your voice using the microphone and transcribe it into text.")
 
-if st.button("Start Transcription"):
-    result = transcribe_from_microphone()
-    st.write(f"### Transcription: `{result}`")
+duration = st.slider("Recording Duration (seconds):", min_value=1, max_value=10, value=5)
+
+if st.button("Start Recording"):
+    audio_file = record_audio(duration)
+    transcription = transcribe_audio(audio_file)
+    st.write(f"### Transcription: `{transcription}`")
+
+    # Optional: Delete the audio file after processing
+    os.remove(audio_file)
