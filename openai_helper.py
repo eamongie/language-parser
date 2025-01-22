@@ -1,36 +1,36 @@
 import os
+from openai import OpenAI
 from dotenv import load_dotenv
-import openai
 
 # Load environment variables
 load_dotenv()
 
-# Get the OpenAI API key from the environment
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Instantiate the OpenAI client
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 def analyze_chunks(chunks):
     analyzed_chunks = []
     for chunk in chunks:
-        # Create a prompt specific to Japanese NLP
+        # Create a prompt for the Japanese language explanation
         prompt = f"Explain the grammatical role and meaning of '{chunk['text']}' in a Japanese sentence. Include details like its part of speech, grammatical usage, and meaning."
 
-        # Use the latest ChatCompletion method
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Use "gpt-4" if available
+        # Use the latest ChatCompletion API through the client
+        response = client.chat.completions.create(
             messages=[
                 {"role": "system", "content": "You are a helpful assistant specializing in Japanese grammar and language."},
                 {"role": "user", "content": prompt}
-            ]
+            ],
+            model="gpt-4",  # Replace with "gpt-3.5-turbo" if needed
         )
 
-        # Extract explanation from the response
-        explanation = response['choices'][0]['message']['content'].strip()
+        # Extract the explanation from the response
+        explanation = response.choices[0].message.content.strip()
 
-        # Append the analyzed chunk with its explanation
+        # Append the chunk with its explanation
         analyzed_chunks.append({
             "text": chunk["text"],
             "role": chunk["role"],
             "color": chunk["color"],
-            "explanation": explanation
+            "explanation": explanation,
         })
     return analyzed_chunks
