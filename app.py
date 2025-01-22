@@ -1,6 +1,14 @@
 import streamlit as st
 import speech_recognition as sr
 
+# Set custom style
+st.markdown(
+    """
+    <link rel="stylesheet" href="static/style.css">
+    """,
+    unsafe_allow_html=True
+)
+
 def transcribe_from_microphone():
     recognizer = sr.Recognizer()
     microphone = sr.Microphone()
@@ -23,9 +31,9 @@ def transcribe_from_microphone():
         return f"Error with the Speech Recognition service: {e}"
 
 # Streamlit UI
-st.title("Real-Time Speech Transcription")
+st.title("🎤 Real-Time Speech Transcription")
 st.write("Click the button below to start transcribing from your microphone.")
 
 if st.button("Start Transcription"):
     result = transcribe_from_microphone()
-    st.write(f"Transcription: {result}")
+    st.write(f"### Transcription: `{result}`")
