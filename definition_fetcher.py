@@ -1,5 +1,4 @@
 import requests
-from bs4 import BeautifulSoup
 
 WIKTIONARY_API = "https://en.wiktionary.org/w/api.php"
 
@@ -20,4 +19,5 @@ def fetch_definition(word, lang="ja"):
         for _, page in pages.items():
             if "extract" in page:
                 return page["extract"]
+    # Fallback message
     return f"No definition found for {word}."
