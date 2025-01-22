@@ -1,31 +1,31 @@
 import streamlit as st
-from chunker import chunk_sentence
-from definition_fetcher import fetch_definition
+import speech_recognition as sr
 
-# Streamlit configuration
-st.set_page_config(page_title="Japanese Sentence Parser", layout="wide")
-st.title("Japanese Sentence Parser")
+def transcribe_from_microphone():
+    recognizer = sr.Recognizer()
+    microphone = sr.Microphone()
 
-# Input box for the sentence
-sentence = st.text_input("Enter a Japanese sentence:")
+    try:
+        with microphone as source:
+            st.info("Adjusting for ambient noise... Speak when ready.")
+            recognizer.adjust_for_ambient_noise(source, duration=1)
 
-if sentence:
-    # Parse the sentence
-    with st.spinner("Processing the sentence..."):
-        chunks = chunk_sentence(sentence)
+            st.info("Listening...")
+            audio = recognizer.listen(source)
 
-    # Display sentence breakdown
-    st.markdown("### Sentence Breakdown")
-    sentence_romaji = []
-    for chunk in chunks:
-        # Fetch the definition for the lemma
-        definition = fetch_definition(chunk["lemma"])
-        sentence_romaji.append(chunk["romaji"])  # Collect romaji for the sentence
-        st.markdown(
-            f"<span style='color:{chunk['color']}; font-size: 18px;'>{chunk['text']}</span>: {definition}",
-            unsafe_allow_html=True
-        )
+        st.info("Processing transcription...")
+        transcription = recognizer.recognize_google(audio)
+        return transcription
 
-    # Display sentence-wide romaji
-    st.markdown("### Sentence in Romaji")
-    st.write(" ".join(sentence_romaji))
+    except sr.UnknownValueError:
+        return "Sorry, I could not understand that."
+    except sr.RequestError as e:
+        return f"Error with the Speech Recognition service: {e}"
+
+# Streamlit UI
+st.title("Real-Time Speech Transcription")
+st.write("Click the button below to start transcribing from your microphone.")
+
+if st.button("Start Transcription"):
+    result = transcribe_from_microphone()
+    st.write(f"Transcription: {result}")
