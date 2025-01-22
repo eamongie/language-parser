@@ -1,27 +1,20 @@
-/* Style for the entire app */
+/* General page styling */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
     color: #333;
 }
 
-/* Style for titles */
+/* Title styling */
 h1 {
     color: #4CAF50;
     text-align: center;
-    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
-/* Style for buttons */
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
+/* Info box styling */
+.stAlert {
     border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #45a049;
+    padding: 10px;
+    background-color: #e7f5e9;
 }
