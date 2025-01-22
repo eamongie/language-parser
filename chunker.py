@@ -11,17 +11,18 @@ COLORS = {
 }
 
 def chunk_sentence(sentence):
+    """Tokenize the sentence and normalize tokens."""
     tokenizer_obj = dictionary.Dictionary().create()
     tokens = tokenizer_obj.tokenize(sentence, tokenizer.Tokenizer.SplitMode.C)
     chunks = []
     for token in tokens:
         pos = token.part_of_speech()[0]  # Part of speech
-        word = token.surface()  # Word surface form
-        normalized = token.dictionary_form()  # Base form (lemma)
+        word = token.surface()  # Original token
+        lemma = token.dictionary_form()  # Base form
         color = COLORS.get(pos, "gray")
         chunks.append({
-            "text": word,  # Original token
-            "lemma": normalized,  # Base form for dictionary lookups
+            "text": word,
+            "lemma": lemma,  # Use lemma for dictionary lookups
             "role": pos,
             "color": color
         })
